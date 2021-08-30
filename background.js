@@ -160,3 +160,10 @@ if(xt > 60){
     console.log("距离上次请求超过60分钟，即将执行请求！");
     concurrent_request();
 }
+
+//清空历史缓存数据
+function clear_websql_data() {
+    db.transaction(function (tx) {
+        tx.executeSql('delete from albumlist');
+    });
+}

@@ -31,6 +31,18 @@
             this.hostlist.splice(index, 1);
             localStorage.removeItem(item.albumurl);
         },
+        delall: function () {
+            this.hostlist.splice(0, vm.hostlist_num);
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if(key != 'laststamp' && key != 'like_item')
+                {
+                    localStorage.removeItem(key);
+                }else{
+                    //console.log(key);
+                }
+            }
+        },
 
         export_file: function () {
             var name = "web4.json";
