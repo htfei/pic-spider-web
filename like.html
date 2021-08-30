@@ -1,0 +1,156 @@
+<html>
+
+<head>
+    <title>🙂图片爬虫web--收藏图集</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./ext/bootstrap.min.css">
+    <script type="text/javascript" src="./ext/jquery.min.js"></script>
+    <script src="./ext/bootstrap.min.js"></script>
+    <script src="./ext/vue.min.js"></script>
+    <script src="./ext/jquery.min.js"></script>
+    <script src="./ext/axios.min.js"></script>
+    <style>
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            border: 1px solid #999;
+        }
+
+        .fileinput-button input {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            opacity: 0;
+        }
+
+        .upload {
+            /* padding: 4px 10px; */
+            position: relative;
+            /* border: 1px solid #999; */
+            text-decoration: none;
+        }
+
+        .change {
+            position: absolute;
+            overflow: hidden;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            font: 16px "Hiragino Sans GB","Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;
+            word-break: break-all;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #dce1e6;    
+            /* float:left; */
+            text-decoration:none;
+        }
+
+        #wf{
+            margin-top: 50px;
+            position: relative;
+        }
+        #wf .unit{
+            position: absolute;
+            /* border: 1px solid black; */
+            width: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: block;
+            font-size: 14px;
+            /*line-height: 1.4;*/
+            color: #58666e;
+            background-color: #f4f6f8;
+            border-width: 0;
+            border-style: solid;
+            border-image: none;
+            border-color: #e4e4e4 #bebebd #bebebd #e4e4e4;
+            background: #fff;
+            box-shadow: 2px 2px 3px 0 #d0d0d0;
+        }
+        #wf .unit img{
+            max-width: 400px;
+        }
+        #title{
+            box-sizing: border-box;
+            line-height: 150%;
+            font-weight: 700;
+            color: #333!important;
+            font-size: 18px;
+            font-family: inherit;
+            cursor: pointer;
+            margin:5px 0px 0px 5px;
+        }
+        #descimg{
+            margin:5px 0px 0px -10px;
+            width: 120%;
+        }
+        .titlepubtime{
+            color: #141719;
+            /*text-decoration: none;*/
+            /*outline: 0;*/
+            /*font-size: 16px;*/
+            cursor: pointer;
+            /*background-color: transparent;*/
+            /*box-sizing: border-box;*/
+            /*line-height: 22px;*/
+        }
+        .pull-right{
+            float: right!important;
+            /*box-sizing: border-box;*/
+            /*display: block;*/
+            /*font-size: 14px;*/
+            /*line-height: 1.4;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" align="center">
+
+        <h1>🙂图片爬虫web--收藏图集</h1>
+        <br />
+        <a href="./news.html" target="_blank" class="btn btn-primary" >最新图集</a>
+        <a href="./like.html" target="_blank" class="btn btn-primary" >收藏图集</a>
+        <a href="./index.html" target="_blank" class="btn btn-primary" >规则管理</a>
+        <br />
+        <br />
+        <h3>已加载 {{ albumlist.length }} 个收藏图集！</h3>
+        
+        <!--<button onclick="concurrent_request()" target="_blank" class="btn btn-primary" >同步最新图集（后台请求所有网站，过几分钟后刷新页面即可）</button>-->
+        <br />
+        <br />
+
+        <div id="wf">
+            <div v-for="(item,index) in albumlist" class="unit">
+                <div>
+                    <a v-bind:href="['./home.html?url=' + item.requrl]"  title="点击访问首页" style='text-decoration:none;' target='_blank'>
+                        {{ item.webname }}
+                    </a>
+                </div>
+
+                <a v-bind:href="['./item.html?url=' + item.eleurl]" title="点击查看详情" style='text-decoration:none;' target='_blank'>
+                    <img id="descimg" v-bind:src="item.elethumbnail">
+                    <p>{{ item.eletitle }}</p>
+                </a>
+
+                <div class="clearfix">
+                    {{ beautimey(item.subtimestamp) }}
+                    <a class="pull-right" style='text-decoration:none;cursor: pointer;'>
+                        <img v-if="item.like" src="images/218-star-full.png" width="16" v-on:click="like_it(item)" title="取消收藏"/>
+                        <img v-else src="images/216-star-empty.png" width="16" v-on:click="like_it(item)" title="添加收藏"/>&nbsp;
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="like.js"></script>
+</body>
+
+</html>

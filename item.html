@@ -1,0 +1,59 @@
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./ext/bootstrap.min.css">
+  <script type="text/javascript" src="./ext/jquery.min.js"></script>
+  <script src="./ext/bootstrap.min.js"></script>
+  <script src="./ext/vue.min.js"></script>
+  <script src="./ext/jquery.min.js"></script>
+  <script src="./ext/axios.min.js"></script>
+  <style>
+    body{
+            background-color: #dce1e6;    
+        }
+  </style>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!--<title>{{ hostnode.webname }}--文章详情页</title>-->
+    <title>{{ hostnode.webname }}--{{ eledesc.title }}</title>
+
+    <!--描述信息-->
+    <h1><a v-bind:href="eledesc.url" target="_blank" style="text-decoration:none">{{ eledesc.title }}</a></h1>
+    <p>发布日期：{{ eledesc.pubdate }}</p>
+    <p>机    构：{{ eledesc.company }} </p>
+    <p>演    员：{{ eledesc.actor }} </p>
+    <p>标    签：{{ eledesc.tags }} </p>
+
+    <!--操作栏<button v-on:click="onekey_download" class="btn btn-primary">打包下载(todo)</button>-->
+    <br />
+    <span><a v-bind:href="['./set.html?url=' + hostnode.albumurl]" target="_blank"
+        class="btn btn-primary">规则设置</a></span>
+    <br />
+    <br />
+
+    <!--debug信息-->
+    <p>{{ concurrent_ok_num }}/{{ concurrent_num }}个线程执行完毕！ 获取 {{ elephtotolist_len }} 张图片！</p>
+    <br />
+    <div>
+        <div v-for="(item,index) in debug_info">
+            <p>{{ index+1 }}. {{ item }}</p>
+        </div>
+    </div>
+
+    <!--图片列表-->
+    <div v-for="(eleimgsrc,index) in elephtotolist">
+        <a v-bind:href="eleimgsrc" target="_blank" referrer="no-referrer|origin|unsafe-url">
+            <img v-bind:src="eleimgsrc" referrer="no-referrer|origin|unsafe-url"
+                style="float:left;padding:3px;max-width:33%;">
+        </a>
+    </div>
+
+</div>
+
+<script src="./item.js"></script>

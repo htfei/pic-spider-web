@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <title>🙂图片爬虫web--管理页</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./ext/bootstrap.min.css">
+    <script type="text/javascript" src="./ext/jquery.min.js"></script>
+    <script src="./ext/bootstrap.min.js"></script>
+    <script src="./ext/vue.min.js"></script>
+    <style>
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            border: 1px solid #999;
+        }
+
+        .fileinput-button input {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            opacity: 0;
+        }
+
+        .upload {
+            /* padding: 4px 10px; */
+            position: relative;
+            /* border: 1px solid #999; */
+            text-decoration: none;
+        }
+
+        .change {
+            position: absolute;
+            overflow: hidden;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        body{
+            background-color: #dce1e6;    
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class='container-fluid table-responsive' align="center">
+
+        <h1>🙂图片爬虫web--管理页</h1>
+        <br />
+        <a href="./news.html" target="_blank" class="btn btn-primary" >最新图集</a>
+        <a href="./like.html" target="_blank" class="btn btn-primary" >收藏图集</a>
+        <a href="./index.html" target="_blank" class="btn btn-primary" >规则管理</a>
+        <br />
+        <br />
+        <h3>共收录 {{ hostlist.length }} 个站点</h3>
+        <br />
+        <a href="javascript:;" class="btn btn-primary upload">导入json文件
+            <input class="change" type="file" id="loadfile" accept=".json"/>
+        </a>
+
+        <!--<a href="javascript:;" class="btn btn-primary upload">导入json文件1
+            <input class="change" type="file" v-on:change="jsReadFiles(this)" accept=".json" />
+        </a>-->
+        
+        <input class="btn btn-primary" type="button" v-on:click="export_file" value="导出json文件" />
+        <a href="./set.html" target="_blank" class="btn btn-primary" >新增</a>
+        <br />
+        <br />
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <td width="5%">ID</td>
+                <td width="10%">站点主页</td>
+
+                <td width="20%">列表页选择器</td>
+                <!--<td >列表页选择器</td>-->
+                <!--<td >标题</td>-->
+                <!--<td >链接</td>-->
+                <!--<td >缩略图</td>-->
+
+                <td width="20%">内容页选择器</td>
+                <!--<td >内容页选择器</td>-->
+                <!--<td >图片源</td>-->
+                <!--<td >内容页翻页</td>-->
+
+                <td width="15%">标签页规则、查询页规则</td>
+
+
+                <td width="15%">操作</td>
+            </tr>
+            <tr v-for="(item,index) in hostlist ">
+                <td>{{item.id}}</td>
+                <td><a v-bind:href="['./home.html?url=' + item.albumurl]" target="_blank">{{item.webname}}</a></td>
+
+
+                <td>
+                    <p>{{item.elearticle}}</p>
+                    <p>{{item.eletitle}}</p>
+                    <p>{{item.eleurl}}</p>
+                    <p>{{item.elethumbnail}}</p>
+                </td>
+
+                <td>
+                    <p>{{item.elephtotolist}}</p>
+                    <p>{{item.eleimgsrc}}</p>
+                    <p>{{item.classname}}</p>
+                </td>
+
+                <td>
+                    <p>{{item.homeurl}}</p>
+                    <p>{{item.searchurl}}</p>
+                </td>
+
+                <td>
+                    <a v-bind:href="['./set.html?url=' + item.albumurl]" target="_blank" class="btn btn-primary" >修改</a>
+                    <button v-on:click="del(item,index)" class="btn btn-primary">删除</button>
+                </td>
+
+            </tr>
+        </table>
+
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

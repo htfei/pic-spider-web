@@ -1,0 +1,133 @@
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./ext/bootstrap.min.css">
+  <script type="text/javascript" src="./ext/jquery.min.js"></script>
+  <script src="./ext/bootstrap.min.js"></script>
+  <script src="./ext/vue.min.js"></script>
+  <script src="./ext/jquery.min.js"></script>
+  <style>
+    body{
+            background-color: #dce1e6;    
+        }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <title>{{ hostnode.webname }}--规则设置</title>
+    <div align="center">
+      <h1><a v-bind:href="['./home.html?url=' + hostnode.albumurl]" target="_blank"
+          style="text-decoration:none">{{ hostnode.webname }}</a></h1>
+      <br />
+      <br />
+
+      <button v-on:click="save" class="btn btn-primary">保存</button>
+      <button v-on:click="del" class="btn btn-primary">删除</button>
+      <span>{{ debug_info }}</span><br /><br />
+
+    </div>
+
+
+
+    <div class="form-horizontal" role="form">
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">ID</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.id">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">站点名</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.webname">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">站点主页</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.albumurl"></div>
+      </div>
+      <br />
+
+      <div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">列表页选择器</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.elearticle"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">标题</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.eletitle"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">链接</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.eleurl"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">缩略图</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.elethumbnail"></div>
+        </div>
+      </div> <br />
+
+      <div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">内容页选择器</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.elephtotolist"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">图片源</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.eleimgsrc"></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">内容页翻页</label>
+          <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.classname"></div>
+        </div>
+      </div><br /><br />
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">标签名</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.label"></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">标签ID</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.labelid"></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">标签页替换翻页规则</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.homeurl"></div>
+      </div><br />
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">首页</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.homepager"></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">字符集</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.charset"></div>
+      </div> <br />
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">查询页规则</label>
+        <div class="col-sm-8"><input type="text" class="form-control" v-model="hostnode.searchurl"></div>
+      </div>
+
+      <!--<div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+          <button v-on:click="save" class="btn btn-primary">保存</button>
+          <button v-on:click="del" class="btn btn-primary">删除</button>
+          <span>{{ debug_info }}</span><br /><br />
+        </div>
+      </div>-->
+
+    </div>
+
+
+
+  </div>
+
+  <script src="set.js"></script>
+</body>
+
+</html>
