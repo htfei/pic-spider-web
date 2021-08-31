@@ -156,7 +156,7 @@
 
                 <a v-bind:href="['./item.html?url=' + item.eleurl]" title="点击查看详情" style='text-decoration:none;' target='_blank'>
                     <img id="descimg" v-bind:src="item.elethumbnail">
-                    <p>{{ item.eletitle }}</p>
+                    <p>{{ index+1+(page-1)*20 }}. {{ item.eletitle }}</p>
                 </a>
 
                 <div class="clearfix">

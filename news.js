@@ -1,7 +1,7 @@
 ﻿
 var db = openDatabase('pic_spider_web', '1.0', 'I can spider pic !', 2 * 1024 * 1024);
 var index = 0 ;//从最新一个开始读
-var nums = 40 ;//一次读取40个，鼠标滚动到底部后会继续加载40个...
+var nums = 20 ;//一次读取20个，鼠标滚动到底部后会继续加载20个...
 var nowstamp = Date.parse(new Date())/1000;//单位秒
 var searchwd = null;
 var hasloadall = false;
@@ -133,14 +133,14 @@ function load_albumlist_from_websql(index, nums, searchwd = null) {
                         var hostnode = find_parsenode(results.rows.item(i).requrl);
                         //var hostnode = JSON.parse(localStorage.getItem(results.rows.item(i).requrl));
                         if(hostnode == null){
-                            continue;
+                            //continue;
                         }
                         var item = {
                             "eletitle": results.rows.item(i).eletitle,
                             "eleurl": results.rows.item(i).eleurl,
                             "elethumbnail": results.rows.item(i).elethumbnail,
                             "requrl": results.rows.item(i).requrl,
-                            "webname": hostnode.webname || "未找到主站" ,
+                            "webname": hostnode && hostnode.webname || "未找到主站" ,
                             "subtimestamp": results.rows.item(i).subtimestamp,
                             "like":false,
                         }
@@ -160,7 +160,9 @@ function load_albumlist_from_websql(index, nums, searchwd = null) {
 }
 
 //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
-//BUG：滚三次没效果了?各种奇怪问题。//DEBUG:==改为>=,MD滚远了
+//setInterval("initial_position()", 5000);
+var pos_laststamp = 0;
+
 $(window).scroll(function () {
     if(hasloadall){
         console.log("已全部加载完毕!不再执行滚动加载！");
@@ -174,8 +176,15 @@ $(window).scroll(function () {
         index += nums;
         // console.log(index,nums);
         load_albumlist_from_websql(index,nums,vm.searchwd);
-        setTimeout("initial_position()",500);
+        setTimeout("initial_position()",500);//有些图片加载慢，半秒打不开，后续打开后没有重新pos会显示重叠在一起
     }
+    
+    //解决重叠，再次滑动鼠标，若距上次pos大于5s,重新pos
+    var pos_nowstamp = Date.parse(new Date())/1000;//单位秒
+    if(pos_nowstamp - pos_laststamp > 5){
+        initial_position();
+    }
+
 });
 
 
@@ -184,8 +193,10 @@ var unit_edge = 30;//单元格子间隔
 var unit_rate = 0.90;
 
 
-
 function initial_position(){
+
+    pos_laststamp = Date.parse(new Date())/1000;//单位秒
+
     var wd = $(window).width();
     var wf_wid = wd*unit_rate;//可用于计算页面总宽度
     var num = Math.floor(wf_wid / unit_wid);//每行格子个数
