@@ -126,7 +126,7 @@ var vm = new Vue({
         find_parsenode: function (url) {
             let that = this;
             var host = url.split('/')[0] + "//" + url.split('/')[2]; //根据url获取对应的结点,用于后面的解析规则
-            var value = localStorage[host] || localStorage[host + '/'];
+            var value = localStorage[url] || localStorage[host] || localStorage[host + '/'];
             if (value) {
                 that.hostnode = JSON.parse(value);
                 that.console_log("根据url找到 "+ host +" 的解析规则！");

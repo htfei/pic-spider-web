@@ -17,6 +17,7 @@
         "concurrent_ok_num": 0,
         "debug_switch": 1,
         "debug_info": ["正在打印debug信息..."],
+        "calc_imgsrc_flag" : 0,
     },
     created: function () {
         //(this.concurrent_num = 1) && this.get_elephtotolist(location.search.slice(5)); //逐个请求,需要将并发数改为1,否则访问的是1,7,13...
@@ -37,7 +38,7 @@
             //2021年8月13日 fix:增加key的兼容判断，支持4种key: xxx.com www.xxx.com xxx.com/ www.xxx.com/
             var key2 = protocol + "//www." + host;
             var key3 = protocol + "//" + host.slice(4);
-            var value = localStorage[key] || localStorage[key + '/']   || localStorage[key2] || localStorage[key2 + '/'] || localStorage[key3] || localStorage[key3 + '/'] ;
+            var value = localStorage[url] || localStorage[key] || localStorage[key + '/']   || localStorage[key2] || localStorage[key2 + '/'] || localStorage[key3] || localStorage[key3 + '/'] ;
             if (value) {
                 that.hostnode = JSON.parse(value);
                 that.console_log("根据url找到 "+ host +" 的解析规则！");
@@ -48,7 +49,7 @@
         calc_url: function (url, page) {
             let that = this;
             if (page == 1) {
-                that.console_log("首次请求的链接:  ", url);
+                //that.console_log("首次请求的链接:  ", url);
                 return url;
             }
             var s = that.hostnode.classname.split('->');//只有2、4有用
@@ -80,7 +81,7 @@
                     (vm.start == 1) && vm.get_eledesc(doc) && (vm.start = 0);
 
                     var alist = $(doc).find(that.hostnode.elephtotolist);
-                    //that.console_log("请求链接：" + now_url, "解析到的phtoto数量=" + alist.length); //that.console_log(alist);
+                    //that.console_log("请求链接：" + now_url, " , 解析到的phtoto数量=" + alist.length); //that.console_log(alist);
                     
                     alist.get().map(item => {
                         var itemstr = that.parse_item(item, that.hostnode.eleimgsrc); //$(item).attr('src');
@@ -93,6 +94,7 @@
                             vm.elephtotolist.push(itemstr);
                             vm.elephtotolist_len += 1;
                         }
+                        
                     });
 
                     //爬取到重复图片则标记当前线程执行完毕，不再循环调用；否则将图片加入列表，继续请求下一页(跳过线程数)
@@ -104,11 +106,19 @@
                         vm.get_elephtotolist(url, page + vm.concurrent_num);
                     }
 
-                    //console.log("elephtotolist=",vm.elephtotolist);
+                    //that.console_log("elephtotolist=",vm.elephtotolist);
+
+                    //2021年9月1日:支持通过图片src计算后续图片的src（如 xxx/1.jpg -> xxx/2.jpg）,直接获取图片，而不是通常的获取网页再解析图片src
+                    if(vm.hostnode.classname == "imgsrc->1->{0}"){
+                        vm.calc_imgsrc_flag = 1;
+                        vm.console_log("该网站通过第一张图片可以计算出后续图片地址！");
+                        vm.calc_imgsrc();
+                    }
+
                 })
                 .catch(e => {
                     vm.concurrent_ok_num += 1;
-                    if(!e.includes("404"))
+                    //if(!e.includes("404"))
                         that.console_log("请求链接发生异常:  " + now_url + "           ", e);
                 });
 
@@ -127,7 +137,6 @@
             await new Promise(function (resolve, reject) {
                 resolve(that.find_parsenode(url))
             });
-            //that.console_log("find hostnode ok!",that.hostnode);
 
             var concurrent_list = [];
             for (var i = 0; i < 6; i++) {
@@ -188,6 +197,18 @@
                 tmp = that.hostnode.albumurl + url.substr(1);
             }
             return tmp;
+        },
+        calc_imgsrc: function () {
+            var nowlen = vm.elephtotolist_len;
+            var imgsrc = vm.elephtotolist[nowlen-1];
+            var pos = imgsrc.lastIndexOf('/');
+            var pos2 = imgsrc.lastIndexOf('.');
+            
+            for (var i = nowlen+1; i <= nowlen + 10; i++) {
+                var nextimgsrc = imgsrc.substr(0, pos+1) + i + imgsrc.substr(pos2);
+                vm.elephtotolist.push(nextimgsrc);
+                vm.elephtotolist_len += 1;
+            }
         }
 
     }

@@ -11,7 +11,7 @@
     find: function (url) {
       let that = this;
       var host = url.split('/')[0] + "//" + url.split('/')[2];
-      var value = localStorage[host] || localStorage[host + '/'];
+      var value = localStorage[url] || localStorage[host] || localStorage[host + '/'];
       if (value) {
         that.hostnode = JSON.parse(value);
         console.log("find ok!");
